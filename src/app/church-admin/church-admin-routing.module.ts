@@ -15,7 +15,7 @@ const routes: Routes = [
   }
   ,
   {
-    path: 'offering',
+    path: 'offerings',
     component: OfferingComponent
   }
   // Future routes will be added here when modules are created:

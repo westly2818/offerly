@@ -179,6 +179,7 @@
   grid-template-columns: 2fr 1fr;
   gap: 28px;
   margin-bottom: 32px;
+  align-items: stretch;
 }
 
 // Chart Section
@@ -188,6 +189,8 @@
   padding: 30px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
 }
 
 .section-header {
@@ -209,53 +212,57 @@
 }
 
 .chart-container {
-  .chart-wrapper {
-    height: 280px;
-    margin-bottom: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-container .chart-wrapper {
+  height: 280px;
+  margin-bottom: 24px;
+}
+
+.chart-bars {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  height: 100%;
+  gap: 10px;
+  padding: 18px 0;
+}
+
+.chart-bar {
+  flex: 1;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  border-radius: 8px 8px 0 0;
+  position: relative;
+  transition: all 0.3s ease;
+  min-height: 20px;
+  
+  &:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    transform: scaleY(1.05);
   }
   
-  .chart-bars {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    height: 100%;
-    gap: 10px;
-    padding: 18px 0;
+  .bar-value {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: 600;
+    color: #475569;
+    white-space: nowrap;
   }
   
-  .chart-bar {
-    flex: 1;
-    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-    border-radius: 8px 8px 0 0;
-    position: relative;
-    transition: all 0.3s ease;
-    min-height: 20px;
-    
-    &:hover {
-      background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-      transform: scaleY(1.05);
-    }
-    
-    .bar-value {
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 10px;
-      font-weight: 600;
-      color: #475569;
-      white-space: nowrap;
-    }
-    
-    .bar-label {
-      position: absolute;
-      bottom: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 10px;
-      color: #64748b;
-      font-weight: 500;
-    }
+  .bar-label {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: #64748b;
+    font-weight: 500;
   }
 }
 
@@ -293,6 +300,54 @@
   padding: 30px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  overflow-x: hidden;
+}
+
+.events-section .section-header {
+  margin-bottom: 16px;
+}
+
+/* Make events content fill and scroll to match chart height */
+.events-section .events-group {
+  margin-bottom: 20px;
+}
+
+.events-section .events-list {
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Thinner scrollbar for events lists */
+.events-section .events-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.events-section .events-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.events-section .events-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+
+.events-section .events-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Firefox */
+.events-section .events-list {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+/* Balance two lists evenly and allow each to scroll */
+.events-section {
+  height: 100%;
 }
 
 .events-group {
@@ -493,6 +548,9 @@
   .main-content-grid {
     grid-template-columns: 1fr;
   }
+  .events-section .events-list {
+    max-height: 240px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -521,8 +579,7 @@
   }
   
   .chart-section,
-  .events-section,
-  .quick-actions {
+  .events-section {
     padding: 20px;
   }
   
@@ -561,8 +618,7 @@
   }
   
   .chart-section,
-  .events-section,
-  .quick-actions {
+  .events-section {
     padding: 16px;
   }
   
