@@ -1,0 +1,21 @@
+.main-content {
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+  background-color: #f7fafc;
+}
+
+.main-content.sidebar-open {
+  margin-left: 280px;
+}
+
+.main-content.sidebar-collapsed {
+  margin-left: 70px;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .main-content.sidebar-open,
+  .main-content.sidebar-collapsed {
+    margin-left: 0;
+  }
+}

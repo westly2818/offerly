@@ -1,0 +1,169 @@
+<div class="dashboard-container">
+  <!-- Welcome Header -->
+  <div class="welcome-section">
+    <div class="welcome-content">
+      <h1 class="welcome-title">Welcome back, Admin</h1>
+      <p class="welcome-subtitle">Here's what's happening at {{ churchName }} today</p>
+    </div>
+    <div class="welcome-date">
+      <span class="current-date">{{ getCurrentDate() }}</span>
+    </div>
+  </div>
+
+  <!-- Summary Cards Row -->
+  <div class="summary-cards-grid">
+    <div class="summary-card" 
+         *ngFor="let card of summaryCards" 
+         [class]="getCardColorClass(card.color)">
+      <div class="card-header">
+        <div class="card-icon">
+          <span class="material-symbols-outlined">{{ card.icon }}</span>
+        </div>
+        <div class="card-trend" *ngIf="card.trend">
+          <span class="material-symbols-outlined trend-icon" 
+             [class]="getTrendColorClass(card.trend.isPositive)">
+            {{ getTrendIcon(card.trend.isPositive) }}
+          </span>
+          <span class="trend-value" 
+                [class]="getTrendColorClass(card.trend.isPositive)">
+            {{ card.trend.value }}%
+          </span>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3 class="card-value">{{ card.value }}</h3>
+        <p class="card-title">{{ card.title }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="main-content-grid">
+    <!-- Chart Section -->
+    <div class="chart-section">
+      <div class="section-header">
+        <h2 class="section-title">Weekly Offerings Trend</h2>
+        <p class="section-subtitle">Last 6 weeks performance</p>
+      </div>
+      <div class="chart-container">
+        <div class="chart-wrapper">
+          <!-- Simple Bar Chart (CSS-based) -->
+          <div class="chart-bars">
+            <div class="chart-bar" 
+                 *ngFor="let data of chartData; let i = index"
+                 [style.height.%]="(data.value / getChartMaxValue()) * 100">
+              <div class="bar-value">{{ formatCurrency(data.value) }}</div>
+              <div class="bar-label">{{ data.name }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item">
+            <div class="legend-color blue"></div>
+            <span>Weekly Offerings</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upcoming Events Section -->
+    <div class="events-section">
+      <div class="section-header">
+        <h2 class="section-title">Upcoming Celebrations</h2>
+        <p class="section-subtitle">Next 7 days</p>
+      </div>
+      
+      <!-- Birthdays -->
+      <div class="events-group">
+        <div class="events-group-header">
+          <span class="material-symbols-outlined">cake</span>
+          <h3 class="group-title">Birthdays</h3>
+          <span class="group-count">{{ upcomingBirthdays.length }}</span>
+        </div>
+        <div class="events-list">
+          <div class="event-item birthday-item" 
+               *ngFor="let birthday of upcomingBirthdays">
+            <div class="event-avatar">
+              <span class="material-symbols-outlined">person</span>
+            </div>
+            <div class="event-details">
+              <div class="event-name">{{ birthday.name }}</div>
+              <div class="event-date">{{ formatDate(birthday.date) }}</div>
+              <div class="event-meta" *ngIf="birthday.age">Turning {{ birthday.age }}</div>
+            </div>
+            <div class="event-action">
+              <button class="action-btn">
+                <span class="material-symbols-outlined">celebration</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Anniversaries -->
+      <div class="events-group">
+        <div class="events-group-header">
+          <span class="material-symbols-outlined">favorite</span>
+          <h3 class="group-title">Anniversaries</h3>
+          <span class="group-count">{{ upcomingAnniversaries.length }}</span>
+        </div>
+        <div class="events-list">
+          <div class="event-item anniversary-item" 
+               *ngFor="let anniversary of upcomingAnniversaries">
+            <div class="event-avatar">
+              <span class="material-symbols-outlined">favorite</span>
+            </div>
+            <div class="event-details">
+              <div class="event-name">{{ anniversary.coupleNames }}</div>
+              <div class="event-date">{{ formatDate(anniversary.date) }}</div>
+              <div class="event-meta" *ngIf="anniversary.years">{{ anniversary.years }} years together</div>
+            </div>
+            <div class="event-action">
+              <button class="action-btn">
+                <span class="material-symbols-outlined">celebration</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <div class="section-header">
+      <h2 class="section-title">Quick Actions</h2>
+    </div>
+    <div class="actions-grid">
+      <button class="action-card" (click)="navigateToOfferings()">
+        <div class="action-icon">
+          <span class="material-symbols-outlined">add</span>
+        </div>
+        <div class="action-content">
+          <h3>Add Offering</h3>
+          <p>Record new offering</p>
+        </div>
+      </button>
+      
+      <button class="action-card" (click)="navigateToFunds()">
+        <div class="action-icon">
+          <span class="material-symbols-outlined">account_balance</span>
+        </div>
+        <div class="action-content">
+          <h3>View Funds</h3>
+          <p>Manage church funds</p>
+        </div>
+      </button>
+      
+      <button class="action-card" (click)="navigateToDonations()">
+        <div class="action-icon">
+          <span class="material-symbols-outlined">volunteer_activism</span>
+        </div>
+        <div class="action-content">
+          <h3>View Donations</h3>
+          <p>Track donations</p>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>

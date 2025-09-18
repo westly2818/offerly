@@ -1,0 +1,117 @@
+<div class="offering-page">
+  <!-- Form Card -->
+  <div class="card form-card">
+    <div class="card-header">
+      <div class="title">
+        <span class="material-symbols-outlined">add_card</span>
+        <h2>Add Offering</h2>
+      </div>
+    </div>
+    <form [formGroup]="offeringForm" (ngSubmit)="onSubmit()" class="card-body grid">
+      <!-- Row 1 -->
+      <div class="form-field">
+        <label>Date</label>
+        <input type="date" formControlName="date" />
+      </div>
+      
+      <div class="form-field">
+        <label>Type</label>
+        <select formControlName="type">
+          <option *ngFor="let t of offeringTypes" [value]="t">{{ t }}</option>
+        </select>
+      </div>
+
+      <div class="form-field" *ngIf="isType('Donation')">
+        <label>Donation Kind</label>
+        <div class="radio-row">
+          <label><input type="radio" formControlName="donationKind" value="Money" /> Money</label>
+          <label><input type="radio" formControlName="donationKind" value="Things" /> Things</label>
+        </div>
+      </div>
+
+      <div class="form-field" *ngIf="isType('Special Offering') || isType('Donation')">
+        <label>Given By</label>
+        <input type="text" placeholder="Name / Group" formControlName="givenBy" />
+        <div class="error" *ngIf="givenByCtrl?.invalid && (givenByCtrl?.dirty || givenByCtrl?.touched)">
+          Given By is required
+        </div>
+      </div>
+
+      <div class="form-field" *ngIf="!isType('Donation') || isDonation('Money')">
+        <label>Amount</label>
+        <input type="number" min="0" placeholder="Amount in ₹" formControlName="amount" />
+        <div class="error" *ngIf="amountCtrl?.invalid && (amountCtrl?.dirty || amountCtrl?.touched)">
+          Valid amount is required
+        </div>
+      </div>
+
+      <div class="form-field full" *ngIf="isDonation('Things')">
+        <label>Description of donation</label>
+        <textarea rows="3" placeholder="Describe donation" formControlName="donationDescription"></textarea>
+        <div class="error" *ngIf="donationDescriptionCtrl?.invalid && (donationDescriptionCtrl?.dirty || donationDescriptionCtrl?.touched)">
+          Please describe the donation
+        </div>
+      </div>
+
+      <div class="form-field full">
+        <label>Notes (optional)</label>
+        <textarea rows="2" placeholder="Any additional notes" formControlName="notes"></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" type="submit" [disabled]="offeringForm.invalid">
+          <span class="material-symbols-outlined">add</span>
+          Add Offering
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Table Card -->
+  <div class="card table-card">
+    <div class="card-header">
+      <div class="title">
+        <span class="material-symbols-outlined">table</span>
+        <h2>Offerings</h2>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Amount/Donation</th>
+              <th>Given By</th>
+              <th>Notes</th>
+              <th class="actions-col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of offerings">
+              <td>{{ row.date | date:'mediumDate' }}</td>
+              <td>{{ row.type }}<span *ngIf="row.donationKind"> ({{ row.donationKind }})</span></td>
+              <td>
+                <ng-container *ngIf="row.type !== 'Donation' || row.donationKind === 'Money'; else donationThings">
+                  {{ formatCurrency(row.amount) }}
+                </ng-container>
+                <ng-template #donationThings>
+                  {{ row.donationDescription || '-' }}
+                </ng-template>
+              </td>
+              <td>{{ row.givenBy || '-' }}</td>
+              <td>{{ row.notes || '-' }}</td>
+              <td class="row-actions">
+                <button class="icon-btn" title="Edit"><span class="material-symbols-outlined">edit</span></button>
+                <button class="icon-btn danger" title="Delete"><span class="material-symbols-outlined">delete</span></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p>offering works!</p>
